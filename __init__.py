@@ -3,7 +3,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_initialize import Base, Category, CategoryItem, User
 from flask import session as login_session
-
+import random, string, json, httplib2, requests, os
+from oauth2client.client import flow_from_clientsecrets, FlowExchangeError, AccessTokenRefreshError
+path = os.path.dirname(__file__)
 app = Flask(__name__)
 
 engine = create_engine('postgresql://catalog:catalog123@localhost/catalog')
@@ -12,9 +14,7 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
-import random, string, json, httplib2, requests, os
-from oauth2client.client import flow_from_clientsecrets, FlowExchangeError, AccessTokenRefreshError
-path = os.path.dirname(__file__)
+
 CLIENT_ID = json.loads(open(path+'/client_secrets.json', 'r').read())['web']['client_id']
 
 def initUser(login):
@@ -238,5 +238,5 @@ def showCategoryItemJSON(catalog_id, item_id):
 
 if __name__ == '__main__':
 	app.debug = True
-	app.secret_key = 'super_secret_key'
-	app.run(host = '0.0.0.0', port = 5000)
+	app.secret_key = 'super secret key'
+	app.run(host = 'localhost', port = 5000)
